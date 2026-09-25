@@ -22,7 +22,7 @@
     },
     "win": {
       "target": ["nsis", "zip"],
-      "icon": "build/icon.ico"
+      "icon": "build/icon.png"
     },
     "files": [
       "**/*"
