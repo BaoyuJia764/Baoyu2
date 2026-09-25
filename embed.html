@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Five Nights at Baoyu's 2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://esm.sh/three@0.184.0",
+        "three/": "https://esm.sh/three@0.184.0/"
+      }
+    }
+  </script>
+  <style>
+    html, body, #game-container { width: 100%; height: 100%; margin: 0; padding: 0; background: #000; overflow: hidden; }
+    body { touch-action: none; font-family: Inter, system-ui, sans-serif; color: #eee; }
+    canvas { display: block; }
+    #ui { position: fixed; inset: 0; pointer-events: none; }
+    #ui .click { pointer-events: auto; }
+    #hud { position: absolute; top: 14px; left: 18px; font-family: Orbitron; font-size: 20px; text-shadow: 0 0 6px #000; }
+    #hud small { display: block; font-family: Inter; font-size: 13px; opacity: .8; margin-top: 4px; }
+    #clock { position: absolute; top: 14px; right: 18px; font-family: Orbitron; font-size: 28px; text-align: right; }
+    #help { position: absolute; bottom: 12px; left: 18px; font-size: 13px; opacity: .75; }
+    #mask { position: absolute; inset: 0; display: none;
+      background: radial-gradient(ellipse 12% 9% at 38% 48%, transparent 90%, #000 100%), radial-gradient(ellipse 12% 9% at 62% 48%, transparent 90%, #000 100%);
+      background-color: rgba(10,0,0,.2); }
+    #mask::before { content: ""; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 13% 10% at 38% 48%, transparent 95%, transparent 100%);
+      -webkit-mask: radial-gradient(ellipse 11% 8% at 38% 48%, transparent 98%, #000 100%), radial-gradient(ellipse 11% 8% at 62% 48%, transparent 98%, #000 100%);
+      -webkit-mask-composite: source-in; mask-composite: intersect; background-color: #0b0205; }
+    #monitor { position: absolute; left: 10%; right: 10%; top: 10%; bottom: 12%; display: none; background: #031211ee; border: 3px solid #3fa7a0;
+      font-family: Orbitron; padding: 20px; box-sizing: border-box; }
+    #monitor h2 { margin: 0 0 10px; color: #3fa7a0; }
+    #windBtn { margin-top: 20px; padding: 16px 30px; font-family: Orbitron; font-size: 18px; background: #8a0f1a; color: #fff; border: 2px solid #d4a64a; cursor: pointer; }
+    .bar { height: 18px; background: #222; border: 1px solid #555; width: 60%; margin-top: 6px; }
+    .bar div { height: 100%; background: #d4a64a; }
+    #camStatus { margin-top: 18px; font-family: Inter; line-height: 1.7; }
+    #phone { position: absolute; right: 20px; bottom: 20px; width: 300px; background: #1a0c14f2; border: 2px solid #ff8ac4; border-radius: 16px; padding: 12px; display: none; box-shadow: 0 0 25px rgba(255,138,196,0.3); }
+    #phone .head { display: flex; align-items: center; gap: 10px; font-weight: 800; color: #ff9ccf; }
+    #phone img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid #ff9ccf; }
+    #phone .msg { background: #3a1830; padding: 10px; border-radius: 10px; margin: 10px 0; }
+    #phone button { display: block; width: 100%; margin-top: 6px; padding: 8px; background: #2a2a38; color: #fff; border: 1px solid #666; border-radius: 8px; cursor: pointer; text-align: left; font-size: 12px; }
+    #phone button:hover { background: #45456a; }
+    #phoneTimer { height: 5px; background: #ff4fa3; margin-top: 8px; }
+    #phoneLock { position: absolute; inset: 0; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; border-radius: 16px; font-size: 32px; }
+    #flash { position: absolute; inset: 0; background: #b00010; opacity: 0; }
+    .screen { position: absolute; inset: 0; background: radial-gradient(circle, #200308, #000 75%); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; display: none; }
+    .screen h1 { font-family: Orbitron; font-size: 46px; color: #d61c2c; margin: 10px; text-shadow: 0 0 20px #f00; }
+    .screen p { max-width: 640px; line-height: 1.6; }
+    .screen img { height: 260px; border: 2px solid #8a0f1a; }
+    .screen button { margin-top: 16px; padding: 14px 40px; font-family: Orbitron; font-size: 20px; background: #8a0f1a; color: #fff; border: 2px solid #d4a64a; cursor: pointer; }
+    #vignette { position: absolute; inset: 0; background: radial-gradient(circle, transparent 50%, #000 110%); }
+    
+    /* Menu screen */
+    #menu { position: fixed; inset: 0; background: radial-gradient(circle, #200308, #000 75%); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; z-index: 1000; }
+    #menu-portrait { width: 200px; height: 300px; border: 3px solid #d4a64a; margin-bottom: 20px; object-fit: contain; }
+    #menu-title { font-family: Orbitron; font-size: 52px; color: #d61c2c; margin: 10px; text-shadow: 0 0 20px #f00; }
+    #menu-sub { font-size: 18px; max-width: 640px; line-height: 1.6; margin-bottom: 30px; }
+    #start-btn { padding: 14px 40px; font-family: Orbitron; font-size: 20px; background: #8a0f1a; color: #fff; border: 2px solid #d4a64a; cursor: pointer; }
+    #start-btn:hover { background: #b01530; }
+    #reset-btn { margin-top: 20px; padding: 10px 20px; font-family: Orbitron; font-size: 14px; background: #1a1a1a; color: #999; border: 1px solid #555; cursor: pointer; }
+    
+    /* Jumpscare */
+    #jumpscare { position: fixed; inset: 0; background: #000; display: none; align-items: center; justify-content: center; z-index: 2000; }
+    #jumpscare.show { display: flex; }
+    #jump-img { width: 100%; height: 100%; object-fit: cover; }
+    
+    /* Camera monitor */
+    #cams { position: absolute; left: 20px; bottom: 20px; width: 400px; max-height: 60%; display: none; background: #0a0a0aee; border: 3px solid #3fa7a0; border-radius: 8px; padding: 12px; box-sizing: border-box; flex-direction: column; }
+    #cams.open { display: flex; }
+    #cam-label { color: #3fa7a0; font-family: Orbitron; font-size: 14px; margin-bottom: 8px; }
+    #cam-canvas { width: 100%; height: 300px; background: #000; margin-bottom: 8px; border: 1px solid #3fa7a0; }
+    .cam-nodes { display: flex; flex-wrap: wrap; gap: 4px; }
+    .cam-node { padding: 6px 12px; background: #1a1a2e; color: #3fa7a0; border: 1px solid #3fa7a0; cursor: pointer; font-family: Orbitron; font-size: 12px; }
+    .cam-node.active { background: #3fa7a0; color: #000; }
+    
+    /* Buttons */
+    #cam-btn, #mask-btn { position: fixed; bottom: 20px; left: 20px; padding: 12px 20px; background: #8a0f1a; color: #fff; border: 2px solid #d4a64a; cursor: pointer; font-family: Orbitron; font-size: 14px; margin-bottom: 50px; }
+    #mask-btn { margin-bottom: 0; }
+    #cam-btn:hover, #mask-btn:hover { background: #b01530; }
+  </style>
+</head>
+<body>
+  <div id="game-container"></div>
+  <div id="ui">
+    <div id="vignette"></div>
+    <div id="mask"></div>
+    <div id="hud">NIGHT <span id="night-label">1</span><small id="battery">🔦 100%</small><small id="musicbox">🎵 100%</small></div>
+    <div id="clock">12 AM</div>
+    <div id="help">Mouse: look | Hold F: flashlight | Space: monitor | W: E.G.O mask | 1-7: switch cam | M: mute</div>
+    
+    <div id="phone" class="click">
+      <div class="head"><img src="https://raw.githubusercontent.com/BaoyuJia764/Baoyu2/main/characters/queenie.png" alt="">Queen of Hatred 💖</div>
+      <div class="msg" id="phoneMsg">No new messages</div>
+      <div id="phoneReplies"></div>
+      <div id="phoneTimer"></div>
+      <div id="phoneLock">🔒</div>
+    </div>
+    
+    <div id="cams" class="click">
+      <div id="cam-label">CAM 01 · Main Hall</div>
+      <canvas id="cam-canvas" width="400" height="300"></canvas>
+      <div class="cam-nodes">
+        <button class="cam-node active">1</button>
+        <button class="cam-node">2</button>
+        <button class="cam-node">3</button>
+        <button class="cam-node">4</button>
+        <button class="cam-node">5</button>
+        <button class="cam-node">6</button>
+        <button class="cam-node">7</button>
+      </div>
+      <button id="windBtn" style="display:none;">HOLD TO WIND</button>
+      <div class="bar" style="margin-top: 8px;"><div id="windBar"></div></div>
+      <div id="camStatus"></div>
+    </div>
+    
+    <button id="cam-btn" class="click">TAB: Monitor</button>
+    <button id="mask-btn" class="click">W: E.G.O Mask</button>
+    
+    <div id="flash"></div>
+    <div id="screen" class="screen click"></div>
+    
+    <div id="menu">
+      <img id="menu-portrait" src="" alt="">
+      <div id="menu-title">NIGHT 1</div>
+      <div id="menu-sub">Survive the night...</div>
+      <button id="start-btn">Start Night 1</button>
+      <button id="reset-btn">Reset Progress</button>
+    </div>
+    
+    <div id="jumpscare">
+      <img id="jump-img" src="" alt="jumpscare">
+    </div>
+  </div>
+  
+  <!-- Game Script - uses absolute URLs for GitHub -->
+  <script>
+    // Override asset paths to use GitHub CDN
+    window.GAME_CONFIG = {
+      basePath: 'https://raw.githubusercontent.com/BaoyuJia764/Baoyu2/main/'
+    };
+  </script>
+  
+  <!-- Inline main game logic adapted for external assets -->
+  <script type="module">
+    import * as THREE from 'three';
+
+    // Asset loader wrapper
+    const assetBase = 'https://raw.githubusercontent.com/BaoyuJia764/Baoyu2/main/';
+    
+    const loadAsset = (path) => assetBase + path;
+
+    // Character config inline
+    const GUARD = {
+        name: 'Hong Lu',
+        image: loadAsset('characters/baoyu.png'),
+        color: '#3f7a4a'
+    };
+
+    const QUEEN = {
+        name: 'Queen of Hatred',
+        image: loadAsset('characters/queenie.png'),
+        color: '#ff5fa8'
+    };
+
+    const ABNORMALITIES = [
+        {
+            id: 'scorched',
+            name: 'Scorched Girl',
+            image: loadAsset('characters/scorchedgirl.png'),
+            color: '#ff5a1f',
+            type: 'mask',
+            path: ['STAGE', 'CAM1', 'VENT_L', 'OFFICE']
+        },
+        {
+            id: 'fragment',
+            name: 'Fragment of the Universe',
+            image: loadAsset('characters/FoU.png'),
+            color: '#b06bff',
+            type: 'mask',
+            path: ['STAGE', 'PARTS', 'VENT_R', 'OFFICE']
+        },
+        {
+            id: 'wolf',
+            name: 'Big and Will Be Bad Wolf',
+            image: loadAsset('characters/BaWBW.png'),
+            color: '#9aa0b5',
+            type: 'light',
+            path: ['PARTS', 'CAM1', 'HALL_FAR', 'HALL_NEAR']
+        },
+        {
+            id: 'calendar',
+            name: 'Doomsday Calendar',
+            image: loadAsset('characters/doomsday-calendar.png'),
+            color: '#d9a441',
+            type: 'box',
+            path: ['PRIZE']
+        }
+    ];
+
+    const QUEEN_TEXTS = [
+        'Hong Lu~ Are you staying safe out there?',
+        'Just checking in!! You doing good?',
+        'Hi Honey! Hows the job treating you?',
+        'Hellooo? Your magical girl is worried!',
+        'Don\'t fall asleep on shift, okay honey?',
+    ];
+
+    const QUEEN_HAPPY = ['Yay! Stay strong!', 'Good boy~ keep it up!', 'Teehee~ I love you so much!', 'Hehe, that\'s the spirit! ✨'];
+    const QUEEN_ANGRY = ['...why aren\'t you answering me?', 'You\'re IGNORING me??', 'D..did I do something to upset you...?', 'Y..You there?..',];
+
+    const HOUR_SECONDS = 50;
+
+    // Load and run the full game
+    const mainScript = await import(loadAsset('main.js'));
+  </script>
+</body>
+</html>
