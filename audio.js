@@ -1,10 +1,10 @@
 let ctx = null;
 let muted = false;
-const music = new Audio('assets/audio/night-ambience.mp3');
+const music = new Audio('assets/audios/night-ambience.mp3');
 music.loop = true;
 music.volume = 0.5;
-const scream = new Audio('assets/audio/jumpscare-scream.mp3');
-const buzz = new Audio('assets/audio/phone-buzz.mp3');
+const scream = new Audio('assets/audios/jumpscare-scream.mp3');
+const buzz = new Audio('assets/audios/phone-buzz.mp3');
 let breathNode = null;
 
 export function unlockAudio() {
