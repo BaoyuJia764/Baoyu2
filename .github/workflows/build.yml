@@ -11,6 +11,7 @@ jobs:
     name: Build on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false  # Keeps Mac building even if Windows fails!
       matrix:
         os: [macos-latest, windows-latest]
 
@@ -21,7 +22,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22  # Fixes the Node.js 20 deprecation warning
 
       - name: Install Dependencies
         run: npm install
@@ -35,6 +36,17 @@ jobs:
       - name: Build Windows App
         if: matrix.os == 'windows-latest'
         run: npx electron-builder --win
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Built App Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Game-Build-${{ matrix.os }}
+          path: |
+            dist/*.dmg
+            dist/*.exe
+            dist/*.zip        run: npx electron-builder --win
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
