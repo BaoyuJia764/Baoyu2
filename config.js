@@ -1,0 +1,73 @@
+// ============================================================
+//  CHARACTER CONFIG — put your own images here!
+//  Upload PNGs (transparent background works best) into a
+//  "characters" folder in your GitHub repo using these names,
+//  or change the paths / use full URLs that allow CORS.
+//  If an image is missing, a placeholder silhouette is drawn.
+// ============================================================
+
+export const GUARD = {
+    name: 'Hong Lu',
+    image: 'characters/hong-lu.png',
+    color: '#3f7a4a'
+};
+
+export const QUEEN = {
+    name: 'Queen of Hatred',
+    image: 'characters/queen-of-hatred.png',
+    color: '#ff5fa8'
+};
+
+// type: 'mask'  -> reaches the office, put the mask on fast
+//       'light' -> waits in the hall, flash the flashlight at it
+//       'box'   -> keep it wound up on CAM 6
+export const ABNORMALITIES = [
+    {
+        id: 'scorched',
+        name: 'Scorched Girl',
+        image: 'characters/scorched-girl.png',
+        color: '#ff5a1f',
+        type: 'mask',
+        path: ['STAGE', 'CAM1', 'VENT_L', 'OFFICE']
+    },
+    {
+        id: 'fragment',
+        name: 'Fragment of the Universe',
+        image: 'characters/fragment-of-the-universe.png',
+        color: '#b06bff',
+        type: 'mask',
+        path: ['STAGE', 'PARTS', 'VENT_R', 'OFFICE']
+    },
+    {
+        id: 'wolf',
+        name: 'Big and Will Be Bad Wolf',
+        image: 'characters/big-bad-wolf.png',
+        color: '#9aa0b5',
+        type: 'light',
+        path: ['PARTS', 'CAM1', 'HALL_FAR', 'HALL_NEAR']
+    },
+    {
+        id: 'calendar',
+        name: 'Doomsday Calendar',
+        image: 'characters/doomsday-calendar.png',
+        color: '#d9a441',
+        type: 'box',
+        path: ['PRIZE']
+    }
+];
+
+export const QUEEN_TEXTS = [
+    'Hong Lu~! Are you staying safe out there? 💖',
+    'Just checking in!! Justice never sleeps, and neither do you!',
+    'Did you eat dinner? A hero needs energy!',
+    'I heard noises on your floor... you okay??',
+    'Remember: love and justice will protect you! ✨',
+    'Hellooo? Your magical girl is worried!!',
+    'Don\'t fall asleep on shift, okay? 🌙',
+    'Any villains yet? I can come beat them up!'
+];
+
+export const QUEEN_HAPPY = ['Yay! Stay strong! 💕', 'Good boy~ keep it up!', 'Hehe, that\'s the spirit! ✨'];
+export const QUEEN_ANGRY = ['...why aren\'t you answering me?', 'You\'re IGNORING me??', 'I am getting very upset, Hong Lu.'];
+
+export const HOUR_SECONDS = 50;
