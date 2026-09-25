@@ -17,10 +17,10 @@ function box(scene, w, h, d, x, y, z, mat) {
 
 export function buildOffice(scene) {
     const loader = new THREE.TextureLoader();
-    const wallMat = new THREE.MeshStandardMaterial({ map: loadTiled(loader, 'assets/office-wall.webp', 2, 1), roughness: 0.9 });
-    const hallWallMat = new THREE.MeshStandardMaterial({ map: loadTiled(loader, 'assets/office-wall.webp', 6, 1), roughness: 0.9 });
-    const floorMat = new THREE.MeshStandardMaterial({ map: loadTiled(loader, 'assets/office-floor.webp', 4, 4), roughness: 0.8 });
-    const hallFloorMat = new THREE.MeshStandardMaterial({ map: loadTiled(loader, 'assets/office-floor.webp', 2, 12), roughness: 0.8 });
+    const wallMat = new THREE.MeshStandardMaterial({ map: loadTiled(loader, 'assets/design/office-wall.png', 2, 1), roughness: 0.9 });
+    const hallWallMat = new THREE.MeshStandardMaterial({ map: loadTiled(loader, 'assets/design/office-wall.png', 6, 1), roughness: 0.9 });
+    const floorMat = new THREE.MeshStandardMaterial({ map: loadTiled(loader, 'assets/design/office-floor.png', 4, 4), roughness: 0.8 });
+    const hallFloorMat = new THREE.MeshStandardMaterial({ map: loadTiled(loader, 'assets/design/office-floor.png', 2, 12), roughness: 0.8 });
     const darkMat = new THREE.MeshStandardMaterial({ color: 0x111014, roughness: 1 });
     const blackMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
 
