@@ -16,6 +16,9 @@
       "category": "public.app-category.games",
       "target": ["dmg", "zip"]
     },
+    "win": {
+      "target": ["nsis", "zip"]
+    },
     "files": [
       "**/*"
     ]
