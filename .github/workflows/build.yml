@@ -43,7 +43,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Game-Build-${{ matrix.os }}
-          overwrite: true  # Fixes the 409 Conflict error!
+          overwrite: true # Fixes the 409 error
           path: |
             dist/*.dmg
             dist/*.exe
