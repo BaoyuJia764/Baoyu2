@@ -7,7 +7,7 @@ function createWindow() {
     webPreferences: { nodeIntegration: false }
   });
 
-  win.loadFile('index.html');
+  win.loadFile('Index.html');
 }
 
 app.whenReady().then(createWindow);
