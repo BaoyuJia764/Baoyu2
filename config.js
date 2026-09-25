@@ -57,17 +57,14 @@ export const ABNORMALITIES = [
 ];
 
 export const QUEEN_TEXTS = [
-    'Hong Lu~! Are you staying safe out there? 💖',
-    'Just checking in!! Justice never sleeps, and neither do you!',
-    'Did you eat dinner? A hero needs energy!',
-    'I heard noises on your floor... you okay??',
-    'Remember: love and justice will protect you! ✨',
-    'Hellooo? Your magical girl is worried!!',
-    'Don\'t fall asleep on shift, okay? 🌙',
-    'Any villains yet? I can come beat them up!'
+    'Hong Lu~ Are you staying safe out there?',
+    'Just checking in!! You doing good?',
+    'Hi Honey! Hows the job treating you?',
+    'Hellooo? Your magical girl is worried!',
+    'Don\'t fall asleep on shift, okay honey?',
 ];
 
-export const QUEEN_HAPPY = ['Yay! Stay strong! 💕', 'Good boy~ keep it up!', 'Teehee~ I love you so much!', 'Hehe, that\'s the spirit! ✨'];
+export const QUEEN_HAPPY = ['Yay! Stay strong!', 'Good boy~ keep it up!', 'Teehee~ I love you so much!', 'Hehe, that\'s the spirit! ✨'];
 export const QUEEN_ANGRY = ['...why aren\'t you answering me?', 'You\'re IGNORING me??', 'D..did I do something to upset you...?', 'Y..You there?..',];
 
 export const HOUR_SECONDS = 50;
