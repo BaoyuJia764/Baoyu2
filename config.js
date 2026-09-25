@@ -1,9 +1,6 @@
 // ============================================================
-//  CHARACTER CONFIG — put your own images here!
-//  Upload PNGs (transparent background works best) into a
-//  "characters" folder in your GitHub repo using these names,
-//  or change the paths / use full URLs that allow CORS.
-//  If an image is missing, a placeholder silhouette is drawn.
+//  Upload PNGs (pls ONLY do transparent backgrounds) into the 'characters' folder
+//  If an image is missing, a placeholder silhouette is drawn. (:fire:)
 // ============================================================
 
 export const GUARD = {
@@ -18,9 +15,10 @@ export const QUEEN = {
     color: '#ff5fa8'
 };
 
-// type: 'mask'  -> reaches the office, put the mask on fast
-//       'light' -> waits in the hall, flash the flashlight at it
-//       'box'   -> keep it wound up on CAM 6
+// types:
+//    - 'mask'  -> reaches the office, put the mask on fast
+//    - 'light' -> waits in the hall, flash the flashlight at it
+//    - 'box'   -> keep it wound up on CAM 6
 export const ABNORMALITIES = [
     {
         id: 'scorched',
