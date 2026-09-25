@@ -8,13 +8,13 @@
 
 export const GUARD = {
     name: 'Hong Lu',
-    image: 'characters/hong-lu.png',
+    image: 'characters/baoyu.png',
     color: '#3f7a4a'
 };
 
 export const QUEEN = {
     name: 'Queen of Hatred',
-    image: 'characters/queen-of-hatred.png',
+    image: 'characters/queenie.png',
     color: '#ff5fa8'
 };
 
@@ -25,7 +25,7 @@ export const ABNORMALITIES = [
     {
         id: 'scorched',
         name: 'Scorched Girl',
-        image: 'characters/scorched-girl.png',
+        image: 'characters/scorchedgirl.png',
         color: '#ff5a1f',
         type: 'mask',
         path: ['STAGE', 'CAM1', 'VENT_L', 'OFFICE']
@@ -33,7 +33,7 @@ export const ABNORMALITIES = [
     {
         id: 'fragment',
         name: 'Fragment of the Universe',
-        image: 'characters/fragment-of-the-universe.png',
+        image: 'characters/FoU.png',
         color: '#b06bff',
         type: 'mask',
         path: ['STAGE', 'PARTS', 'VENT_R', 'OFFICE']
@@ -41,7 +41,7 @@ export const ABNORMALITIES = [
     {
         id: 'wolf',
         name: 'Big and Will Be Bad Wolf',
-        image: 'characters/big-bad-wolf.png',
+        image: 'characters/BaWBW.png',
         color: '#9aa0b5',
         type: 'light',
         path: ['PARTS', 'CAM1', 'HALL_FAR', 'HALL_NEAR']
@@ -67,7 +67,7 @@ export const QUEEN_TEXTS = [
     'Any villains yet? I can come beat them up!'
 ];
 
-export const QUEEN_HAPPY = ['Yay! Stay strong! 💕', 'Good boy~ keep it up!', 'Hehe, that\'s the spirit! ✨'];
-export const QUEEN_ANGRY = ['...why aren\'t you answering me?', 'You\'re IGNORING me??', 'I am getting very upset, Hong Lu.'];
+export const QUEEN_HAPPY = ['Yay! Stay strong! 💕', 'Good boy~ keep it up!', 'Teehee~ I love you so much!', 'Hehe, that\'s the spirit! ✨'];
+export const QUEEN_ANGRY = ['...why aren\'t you answering me?', 'You\'re IGNORING me??', 'D..did I do something to upset you...?', 'Y..You there?..',];
 
 export const HOUR_SECONDS = 50;
