@@ -56,7 +56,6 @@
     .screen button { margin-top: 16px; padding: 14px 40px; font-family: Orbitron; font-size: 20px; background: #8a0f1a; color: #fff; border: 2px solid #d4a64a; cursor: pointer; }
     #vignette { position: absolute; inset: 0; background: radial-gradient(circle, transparent 50%, #000 110%); }
     
-    /* Menu screen */
     #menu { position: fixed; inset: 0; background: radial-gradient(circle, #200308, #000 75%); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; z-index: 1000; }
     #menu-portrait { width: 200px; height: 300px; border: 3px solid #d4a64a; margin-bottom: 20px; object-fit: contain; }
     #menu-title { font-family: Orbitron; font-size: 52px; color: #d61c2c; margin: 10px; text-shadow: 0 0 20px #f00; }
@@ -65,12 +64,10 @@
     #start-btn:hover { background: #b01530; }
     #reset-btn { margin-top: 20px; padding: 10px 20px; font-family: Orbitron; font-size: 14px; background: #1a1a1a; color: #999; border: 1px solid #555; cursor: pointer; }
     
-    /* Jumpscare */
     #jumpscare { position: fixed; inset: 0; background: #000; display: none; align-items: center; justify-content: center; z-index: 2000; }
     #jumpscare.show { display: flex; }
     #jump-img { width: 100%; height: 100%; object-fit: cover; }
     
-    /* Camera monitor */
     #cams { position: absolute; left: 20px; bottom: 20px; width: 400px; max-height: 60%; display: none; background: #0a0a0aee; border: 3px solid #3fa7a0; border-radius: 8px; padding: 12px; box-sizing: border-box; flex-direction: column; }
     #cams.open { display: flex; }
     #cam-label { color: #3fa7a0; font-family: Orbitron; font-size: 14px; margin-bottom: 8px; }
@@ -79,7 +76,6 @@
     .cam-node { padding: 6px 12px; background: #1a1a2e; color: #3fa7a0; border: 1px solid #3fa7a0; cursor: pointer; font-family: Orbitron; font-size: 12px; }
     .cam-node.active { background: #3fa7a0; color: #000; }
     
-    /* Buttons */
     #cam-btn, #mask-btn { position: fixed; bottom: 20px; left: 20px; padding: 12px 20px; background: #8a0f1a; color: #fff; border: 2px solid #d4a64a; cursor: pointer; font-family: Orbitron; font-size: 14px; margin-bottom: 50px; }
     #mask-btn { margin-bottom: 0; }
     #cam-btn:hover, #mask-btn:hover { background: #b01530; }
@@ -138,24 +134,18 @@
     </div>
   </div>
   
-  <!-- Game Script - uses absolute URLs for GitHub -->
   <script>
-    // Override asset paths to use GitHub CDN
     window.GAME_CONFIG = {
       basePath: 'https://raw.githubusercontent.com/BaoyuJia764/Baoyu2/main/'
     };
   </script>
   
-  <!-- Inline main game logic adapted for external assets -->
   <script type="module">
     import * as THREE from 'three';
 
-    // Asset loader wrapper
     const assetBase = 'https://raw.githubusercontent.com/BaoyuJia764/Baoyu2/main/';
-    
     const loadAsset = (path) => assetBase + path;
 
-    // Character config inline
     const GUARD = {
         name: 'Hong Lu',
         image: loadAsset('characters/baoyu.png'),
@@ -215,8 +205,6 @@
     const QUEEN_ANGRY = ['...why aren\'t you answering me?', 'You\'re IGNORING me??', 'D..did I do something to upset you...?', 'Y..You there?..',];
 
     const HOUR_SECONDS = 50;
-
-    // Load and run the full game
     const mainScript = await import(loadAsset('main.js'));
   </script>
 </body>
