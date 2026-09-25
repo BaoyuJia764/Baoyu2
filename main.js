@@ -205,7 +205,7 @@ function updateTexts(dt) {
         ui.phoneMsg.textContent = QUEEN_ANGRY[Math.min(state.anger - 1, QUEEN_ANGRY.length - 1)];
         sfx.tone(90, 0.5, 'sawtooth', 0.12);
         if (state.anger >= 3) {
-            jumpscare(QUEEN.name, 'Queen of Hatred is very impatient...');
+            jumpscare(QUEEN.name, 'Queenie is very impatient...');
         }
     }
     ui.mood.textContent = ['💖 Happy', '😠 Annoyed', '💢 FURIOUS'][Math.min(state.anger, 2)];
@@ -229,7 +229,7 @@ function updateEnemies(dt) {
                 enemy.maskHold = 0;
                 enemy.officeTimer -= dt;
                 if (enemy.officeTimer <= 0) {
-                    jumpscare(def.id, `${def.name} got you. Put the mask on faster!`);
+                    jumpscare(def.id, `${def.name} got'ya. The mask might mess with their detection...`);
                     return;
                 }
             }
@@ -248,7 +248,7 @@ function updateEnemies(dt) {
             }
             enemy.attackTimer -= dt;
             if (enemy.attackTimer <= 0) {
-                jumpscare(def.id, `${def.name} lunged from the hallway. Flash it away!`);
+                jumpscare(def.id, `${def.name} lunged from the hallway. Maybe blinding it will make it back off...`);
                 return;
             }
             continue;
@@ -298,7 +298,7 @@ function updateCalendar(dt) {
             sfx.tone(440 + Math.random() * 80, 0.1, 'triangle', 0.08);
         }
         if (state.calendarTimer <= 0) {
-            jumpscare('calendar', 'Doomsday Calendar reached zero. Keep it wound on CAM 6!');
+            jumpscare('calendar', 'Doomsday Calendar reached zero. It\'s probably for the best you keep that wound up...');
         }
     } else {
         state.calendarTimer = -1;
@@ -438,7 +438,7 @@ function winNight() {
     const done = night;
     night = Math.min(night + 1, 7);
     localStorage.setItem('hongluNight', night);
-    showMenu('6 AM', `Hong Lu survived Night ${done}! Queen of Hatred is proud of you.`, `Start Night ${night}`);
+    showMenu('6 AM', `Survived Night ${done}! Queenie\'s proud of you~`, `Start Night ${night}`);
 }
 
 function showMenu(title, sub, button) {
