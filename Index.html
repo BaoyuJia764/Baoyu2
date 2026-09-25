@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hong Lu's Night Shift</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./rosebud-game-defaults.css" />
+    <script src="./rosebud-game-defaults.js" defer></script>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://esm.sh/three@0.184.0",
+          "three/": "https://esm.sh/three@0.184.0/"
+        }
+      }
+    </script>
+    <style>
+      html, body, #game-container { width: 100%; height: 100%; margin: 0; padding: 0; background: #000; overflow: hidden; }
+      body { touch-action: none; font-family: Inter, system-ui, sans-serif; color: #eee; }
+      canvas { display: block; }
+      #ui { position: fixed; inset: 0; pointer-events: none; }
+      #ui .click { pointer-events: auto; }
+      #hud { position: absolute; top: 14px; left: 18px; font-family: Orbitron; font-size: 20px; text-shadow: 0 0 6px #000; }
+      #hud small { display: block; font-family: Inter; font-size: 13px; opacity: .8; margin-top: 4px; }
+      #clock { position: absolute; top: 14px; right: 18px; font-family: Orbitron; font-size: 28px; text-align: right; }
+      #help { position: absolute; bottom: 12px; left: 18px; font-size: 13px; opacity: .75; }
+      #mask { position: absolute; inset: 0; display: none;
+        background: radial-gradient(ellipse 12% 9% at 38% 48%, transparent 90%, #000 100%), radial-gradient(ellipse 12% 9% at 62% 48%, transparent 90%, #000 100%);
+        background-color: rgba(10,0,0,.2); }
+      #mask::before { content: ""; position: absolute; inset: 0;
+        background: radial-gradient(ellipse 13% 10% at 38% 48%, transparent 95%, transparent 100%);
+        -webkit-mask: radial-gradient(ellipse 11% 8% at 38% 48%, transparent 98%, #000 100%), radial-gradient(ellipse 11% 8% at 62% 48%, transparent 98%, #000 100%);
+        -webkit-mask-composite: source-in; mask-composite: intersect; background-color: #0b0205; }
+      #monitor { position: absolute; left: 10%; right: 10%; top: 10%; bottom: 12%; display: none; background: #031211ee; border: 3px solid #3fa7a0;
+        font-family: Orbitron; padding: 20px; box-sizing: border-box; }
+      #monitor h2 { margin: 0 0 10px; color: #3fa7a0; }
+      #windBtn { margin-top: 20px; padding: 16px 30px; font-family: Orbitron; font-size: 18px; background: #8a0f1a; color: #fff; border: 2px solid #d4a64a; cursor: pointer; }
+      .bar { height: 18px; background: #222; border: 1px solid #555; width: 60%; margin-top: 6px; }
+      .bar div { height: 100%; background: #d4a64a; }
+      #camStatus { margin-top: 18px; font-family: Inter; line-height: 1.7; }
+      #phone { position: absolute; right: 20px; bottom: 20px; width: 300px; background: #1a0c14f2; border: 2px solid #ff8ac4; border-radius: 16px; padding: 12px; display: none; box-shadow: 0 0 25px #ff4fa3aa; }
+      #phone .head { display: flex; align-items: center; gap: 10px; font-weight: 800; color: #ff9ccf; }
+      #phone img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid #ff9ccf; }
+      #phone .msg { background: #3a1830; padding: 10px; border-radius: 10px; margin: 10px 0; }
+      #phone button { display: block; width: 100%; margin-top: 6px; padding: 8px; background: #2a2a38; color: #fff; border: 1px solid #666; border-radius: 8px; cursor: pointer; text-align: left; font-size: 14px; }
+      #phone button:hover { background: #45456a; }
+      #phoneTimer { height: 5px; background: #ff4fa3; margin-top: 8px; }
+      #flash { position: absolute; inset: 0; background: #b00010; opacity: 0; }
+      .screen { position: absolute; inset: 0; background: radial-gradient(circle, #200308, #000 75%); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+      .screen h1 { font-family: Orbitron; font-size: 46px; color: #d61c2c; margin: 10px; text-shadow: 0 0 20px #f00; }
+      .screen p { max-width: 640px; line-height: 1.6; }
+      .screen img { height: 260px; border: 2px solid #8a0f1a; }
+      .screen button { margin-top: 16px; padding: 14px 40px; font-family: Orbitron; font-size: 20px; background: #8a0f1a; color: #fff; border: 2px solid #d4a64a; cursor: pointer; }
+      #vignette { position: absolute; inset: 0; background: radial-gradient(circle, transparent 50%, #000 110%); }
+    </style>
+  </head>
+  <body>
+    <div id="game-container"></div>
+    <div id="ui">
+      <div id="vignette"></div>
+      <div id="mask"></div>
+      <div id="hud">NIGHT 1<small id="battery">Flashlight: 100%</small><small id="musicbox">Music Box: 100%</small></div>
+      <div id="clock">12 AM</div>
+      <div id="help">Mouse: look | Hold F: flashlight | Space: E.G.O mask | Tab: monitor | 1/2/3: reply to texts</div>
+      <div id="monitor" class="click">
+        <h2>CAM MONITOR — MUSIC BOX ROOM</h2>
+        <div>Music Box wind-up:</div>
+        <div class="bar"><div id="windBar"></div></div>
+        <button id="windBtn">HOLD TO WIND</button>
+        <div id="camStatus"></div>
+      </div>
+      <div id="phone" class="click">
+        <div class="head"><img src="assets/queen-portrait.webp" alt="">Queen of Hatred 💖</div>
+        <div class="msg" id="phoneMsg"></div>
+        <div id="phoneReplies"></div>
+        <div id="phoneTimer"></div>
+      </div>
+      <div id="flash"></div>
+      <div id="screen" class="screen click"></div>
+    </div>
+    <script type="module" src="main.js"></script>
+    <script src="https://storage.googleapis.com/rosebud_staticfiles/ChatManager.js"></script>
+    <script src="https://storage.googleapis.com/rosebud_staticfiles/ImageGenerator.js"></script>
+    <script src="https://storage.googleapis.com/rosebud_staticfiles/ProgressLogger.js"></script>
+    <script src="https://storage.googleapis.com/rosebud_staticfiles/OGP.js"></script>
+  </body>
+</html>
